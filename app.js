@@ -20,7 +20,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRouter);
 app.use("/api/transactions", transactiosRouter);
 app.use("/api/users", usersRouter);
-app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({
