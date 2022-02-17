@@ -26,7 +26,7 @@ const transactionSchema = Schema(
     },
     comment: {
       type: String,
-      default: null,
+      default:'',
     },
     sum: {
       type: Number,
@@ -49,8 +49,8 @@ const joiSchema = Joi.object({
   month: Joi.number().integer().positive().max(12).required(),
   year: Joi.number().integer().positive().min(2021).max(2023).required(),
   type: Joi.boolean().required(),
-  category: Joi.string().required(),
-  comment: Joi.string(),
+  category: Joi.string().required().optional(),
+  comment: Joi.string().optional().allow(''),
   balance: Joi.number(),
   sum: Joi.number().required(),
 });

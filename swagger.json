@@ -387,8 +387,147 @@
           }
         }
       }
+    },
+    "/api/statistics": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get all transactions. Can be filtered by month and year",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Statistics"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    },
+    "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get all categories",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                 "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
     }
-
   },
 
   "components": {
@@ -898,8 +1037,50 @@
             "example": "Server error"
           }
         }
+      },
+      "Category": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Eat"
+                    },
+                    "id": {
+                        "type":"String",
+                        "example": "54362576gjhVNHVG87867"
+                    }
+                }
+      },
+      "Statistics": {
+                "type": "object",
+                "properties": {
+                    "data":{
+                        "type":"object",
+                        "properties": {
+                            "categoriesSummary":{
+                                "type":"object",
+                                "example":"Other"
+                            },
+                            "totalIncome":{
+                                "type":"Number",
+                                "example": 2000
+                            },
+                            "totalSpend": {
+                                "type": "Number",
+                                "example": 1000
+                            },
+                            "uniqueMonth": {
+                                "type":"number",
+                                "example":11
+                            },
+                            "uniqueYear": {
+                                "type": "number",
+                                "example": 2021
+                            }
+                        }
+                    }
+                }
       }
-
     },
 
     "securitySchemes": {
