@@ -391,9 +391,9 @@
     "/api/statistics": {
             "get": {
                 "tags": [
-                    "Transactions"
+                    "Statistics"
                 ],
-                "summary": "Get all transactions. Can be filtered by month and year",
+                "summary": "Get all statistics.",
                 "security": [
                     {
                         "Bearer": []
