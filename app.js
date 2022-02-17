@@ -8,6 +8,7 @@ const authRouter = require("./routes/api/auth");
 const transactiosRouter = require("./routes/api/transactions");
 const usersRouter = require("./routes/api/users");
 const categoriesRouter = require("./routes/api/categories");
+const statisticRouter = require("./routes/api/statistic");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/transactions", transactiosRouter);
 app.use("/api/users", usersRouter);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use("/api/categories", categoriesRouter);
+app.use("/api/statistics", statisticRouter);
 
 app.use((req, res) => {
   res.status(404).json({
