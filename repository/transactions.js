@@ -1,22 +1,27 @@
 const { Transaction } = require("../models");
 
 const getAllIncomeByDate = async (userId, month, year) => {
-    const result = await Transaction.find({ owner: userId, type: '+', month, year })
-    return result;
+    try {
+        const result = await Transaction.find({ owner: userId, type: true, month, year })
+        return result;
+    } catch (error) {
+        throw new Error(error.message)
+    }
+    
 };
 
 const getAllSpendByDate = async (userId, month, year) => {
-    const result = await Transaction.find({ owner: userId, type: '-', month, year })
+    const result = await Transaction.find({ owner: userId, type: false, month, year })
     return result;
 };
 
 const getAllIncome = async (userId) => {
-    const result = await Transaction.find({ owner: userId, type: '+' })
+    const result = await Transaction.find({ owner: userId, type: true })
     return result;
 };
 
 const getAllSpend = async (userId) => {
-    const result = await Transaction.find({ owner: userId, type: '-' })
+    const result = await Transaction.find({ owner: userId, type: false })
     return result;
 };
 
