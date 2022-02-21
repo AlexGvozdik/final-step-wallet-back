@@ -10,7 +10,7 @@
   },
   "main": ".eslintrc.js",
   "bin": {
-    "template": "server.js"
+    "final-step-wallet-back": "server.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "cron": "^1.8.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
@@ -50,5 +51,6 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.28.0",
     "nodemon": "^2.0.15"
-  }
+  },
+  "description": ""
 }
