@@ -7,7 +7,6 @@ const getAllIncomeByDate = async (userId, month, year) => {
     } catch (error) {
         throw new Error(error.message)
     }
-    
 };
 
 const getAllSpendByDate = async (userId, month, year) => {
