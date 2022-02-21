@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "final-step-wallet-back.herokuapp.com" }],
+  "servers": [{ "url":"https://final-step-wallet-back.herokuapp.com" }],
   "tags": [
     {
       "name": "Auth",

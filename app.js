@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
 
 const job = new CronJob('0 */25 6-20 * * *', function () {
   const d = new Date();
-  https.get('https://wallet-g5.herokuapp.com/login');
+  https.get('https://final-step-wallet-back.herokuapp.com/login');
   console.log('Every 25 minutes between 6-20:', d);
 });
 job.start();
