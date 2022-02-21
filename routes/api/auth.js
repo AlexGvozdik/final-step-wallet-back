@@ -1,26 +1,13 @@
-const express = require("express");
-
-const { controllerWrapper, validation } = require("../../middlewares");
-const { authenticate } = require("../../middlewares");
-const { joiRegistrationSchema, joiLoginSchema } = require("../../models/user");
-const { auth: ctrl } = require("../../controllers");
-
+const express = require('express');
 const router = express.Router();
+const { auth } = require('../../controllers');
+const { controllerWrapper, validation, authenticate } = require('../../middlewares');
+const { joiSchema } = require('../../models/user');
 
-router.post(
-  "/register",
-  validation(joiRegistrationSchema),
-  controllerWrapper(ctrl.register)
-);
+router.post('/register', validation(joiSchema), controllerWrapper(auth.register));
 
-router.get("/current", authenticate, controllerWrapper(ctrl.getUser));
+router.post('/login', validation(joiSchema), controllerWrapper(auth.login));
 
-router.post(
-  "/login",
-  validation(joiLoginSchema),
-  controllerWrapper(ctrl.login)
-);
-
-router.get("/logout", authenticate, controllerWrapper(ctrl.logout));
+router.get('/logout', authenticate, controllerWrapper(auth.logout));
 
 module.exports = router;

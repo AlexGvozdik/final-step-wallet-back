@@ -1,11 +1,9 @@
-const register = require("./register");
-const login = require("./login");
-const logout = require("./logout");
-const getUser = require("./getUser");
+const register = require('./register');
+const login = require('./login');
+const logout = require('./logout');
 
 module.exports = {
   register,
   login,
-  logout,
-  getUser,
+  logout
 };

@@ -1,19 +1,9 @@
-const { InternalServerError } = require("http-errors");
-const { User } = require("../../models");
+const { User } = require('../../models/user');
 
-const logout = async (req, res, next) => {
-  const userData = await User.findByIdAndUpdate(
-    req.user._id,
-    { token: null },
-    { new: true }
-  );
-
-  if (!userData) throw new InternalServerError("Server error");
-
-  res.status(204).json({
-    status: "User logged out",
-    code: 204,
-  });
+const logout = async(req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: null });
+  res.status(204).json();
 };
 
 module.exports = logout;

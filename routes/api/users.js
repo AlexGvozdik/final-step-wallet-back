@@ -1,26 +1,26 @@
-const express = require("express")
-
+const express = require('express');
+const router = express.Router();
+const { users } = require('../../controllers');
 const {
   controllerWrapper,
   validation,
   authenticate,
-} = require("../../middlewares")
-const { joiBalanceSchema } = require("../../models/user")
-const { users: ctrl } = require("../../controllers")
+} = require('../../middlewares');
+const { balanceSchema } = require('../../models/user');
 
-const router = express.Router()
+router.get('/current', authenticate, controllerWrapper(users.getCurrentUser));
 
-router.patch(
-  "/balance",
-  authenticate,
-  validation(joiBalanceSchema),
-  controllerWrapper(ctrl.updateBalance)
-)
+// router.patch(
+//   '/balance',
+//   authenticate,
+//   validation(balanceSchema),
+//   controllerWrapper(users.updateBalance),
+// );
 
 router.get(
-  "/balance",
+  '/balance',
   authenticate,
-  controllerWrapper(ctrl.getBalance)
-)
+  controllerWrapper(users.getCurrentBalance),
+);
 
-module.exports = router
+module.exports = router;

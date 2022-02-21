@@ -1,60 +1,48 @@
-const { Schema, model } = require("mongoose");
-const Joi = require("joi");
-const { boolean } = require("joi");
+const { Schema, model } = require('mongoose');
+const Joi = require('joi');
 
-const transactionSchema = Schema(
-  {
-    day: {
-      type: Number,
-      required: true,
-    },
-    month: {
-      type: Number,
-      required: true,
-    },
-    year: {
-      type: Number,
-      required: true,
-    },
-    type: {
-      type: Boolean,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    comment: {
-      type: String,
-      default:'',
-    },
-    sum: {
-      type: Number,
-      required: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-    },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
-    },
+const transactionSchema = Schema({
+  type: {
+    type: String,
+    required: [true, 'Transaction type is required'],
+    enum: ['income', 'expense'],
   },
-  { versionKey: false, timestamp: true }
-);
+  category: {
+    type: String,
+  },
+  amount: {
+    type: Number,
+    required: [true, 'Transaction amount is required'],
+  },
+  date: {
+    type: Date,
+    required: [true, 'Transaction date is required'],
+  },
+  comment: {
+    type: String,
+  },
+  balanceState: {
+    type: Number,
+    required: [true, 'Balance state after this transaction is required'],
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
+}, { versionKey: false, timestamps: true });
 
 const joiSchema = Joi.object({
-  day: Joi.number().integer().positive().max(31).required(),
-  month: Joi.number().integer().positive().max(12).required(),
-  year: Joi.number().integer().positive().min(2021).max(2023).required(),
-  type: Joi.boolean().required(),
-  category: Joi.string().required().optional(),
-  comment: Joi.string().optional().allow(''),
-  balance: Joi.number(),
-  sum: Joi.number().required(),
+  type: Joi.string().valid('income', 'expense').required(),
+  category: Joi.string().allow(''),
+  amount: Joi.number().required(),
+  date: Joi.string().isoDate().required(),
+  comment: Joi.string().allow(''),
+  balanceState: Joi.number(),
 });
 
-const Transaction = model("transaction", transactionSchema);
+const Transaction = model('transaction', transactionSchema);
 
-module.exports = { Transaction, joiSchema };
+module.exports = {
+  Transaction,
+  joiSchema
+};

@@ -1,24 +1,17 @@
 {
-  "openapi": "3.0.2",
-
+  "openapi": "3.0.1",
   "info": {
-    "version": "1.3.0",
-    "title": "Wallet API Docs",
-    "description": "Showing off all Wallet APIs",
+    "version": "1.0.0",
+    "title": "Wallet",
+    "description": "Showing off swagger-ui-express",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-
   "consumes": ["application/json"],
   "produces": ["application/json"],
-
-  "servers": [
-    { "url": "https://final-step-wallet-back.herokuapp.com"},
-    { "url": "http://localhost:3030" }
-  ],
-
+  "servers": [{ "final-step-wallet-back.herokuapp.com" }],
   "tags": [
     {
       "name": "Auth",
@@ -31,20 +24,22 @@
     {
       "name": "Transactions",
       "description": "Transactions endpoints"
+    },
+    {
+      "name": "Categories",
+      "description": "Categories endpoints"
     }
   ],
-
   "paths": {
-
-    "/api/auth/register": {
+    "/auth/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "User registration",
         "parameters": [],
-        "security": [],
+        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Registration object",
-          "required": "true",
+          "description": "Registration's object",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -55,58 +50,35 @@
         },
         "responses": {
           "201": {
-            "description": "Succesfull Operation",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse201"
+                  "$ref": "#/components/schemas/RegistrationResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationLoginError400"
-                }
-              }
-            }
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },
           "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationError409"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+            "description": "Provided email already exists",
+            "content": {}
           }
         }
       }
     },
-
-    "/api/auth/login": {
+    "/auth/login": {
       "post": {
         "tags": ["Auth"],
-        "summary": "User login",
+        "summary": "User authentication",
         "parameters": [],
-        "security": [],
+        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Login object",
-          "required": "true",
+          "description": "Authentication's object",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -117,235 +89,105 @@
         },
         "responses": {
           "200": {
-            "description": "Succesfull Operation",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse200"
+                  "$ref": "#/components/schemas/LoginResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationLoginError400"
-                }
-              }
-            }
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },
           "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+            "description": "Email or password is wrong",
+            "content": {}
           }
         }
       }
     },
-
-    "/api/auth/logout": {
+    "/auth/logout": {
       "get": {
         "tags": ["Auth"],
-        "summary": "User Logout",
+        "summary": "User logout",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "204": {
-            "description": "Succesfull operation"
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+            "description": "Successful operation",
+            "content": {}
           }
         }
       }
     },
-
-    "/api/users/balance": {
+    "/users/current": {
       "get": {
         "tags": ["Users"],
-        "summary": "User Balance",
+        "summary": "Get current user",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "Balance retrieved",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetBalanceResponse200"
+                  "$ref": "#/components/schemas/CurrentUserResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },
           "401": {
             "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+            "content": {}
           }
         }
-      },
-
-      "patch": {
+      }
+    },
+    "/users/balance": {
+      "get": {
         "tags": ["Users"],
-        "summary": "User Balance",
+        "summary": "Get user's balance",
         "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Balance object",
-          "required": "true",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBalanceRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Balance retrieved",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateBalanceResponse200"
+                  "$ref": "#/components/schemas/CurrentBalanceResponse"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
           },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+          "404": {
+            "description": "User not found",
+            "content": {}
           }
         }
       }
     },
-
-    "/api/transactions/get": {
-      "post": {
-        "tags": ["Transactions"],
-        "summary": "Get transactions",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Transaction object",
-          "required": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTransactionsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Succesfull Operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTransactionsResponse200"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
-    "/api/transactions/add": {
+    "/transactions": {
       "post": {
         "tags": ["Transactions"],
         "summary": "Add transaction",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Transaction object",
-          "required": "true",
+          "description": "",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -355,734 +197,500 @@
           }
         },
         "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "User's transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllTransactionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
           "200": {
-            "description": "Succesfull Operation",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddTransactionResponse200"
+                  "$ref": "#/components/schemas/AllTransactionsResponse"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error401"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError500"
-                }
-              }
-            }
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
           }
         }
       }
     },
-    "/api/statistics": {
-            "get": {
-                "tags": [
-                    "Statistics"
-                ],
-                "summary": "Get all statistics.",
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Statistics"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized (invalid access token)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Error"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "401"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Fail"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "500"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Internal Server Error"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    "/transactions/statistics": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "User's statistic",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PeriodStatisticsRequest"
+              }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeroidStatisticsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     },
-    "/api/categories": {
-            "get": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Get all categories",
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                 "$ref": "#/components/schemas/Category"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized (invalid access token)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Error"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "401"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Fail"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "500"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Internal Server Error"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    "/categories/expense": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Expense categories",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": ""
+              }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": ""
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/categories/income": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Income categories",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": ""
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": ""
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
-
   "components": {
     "schemas": {
-
       "RegistrationRequest": {
         "type": "object",
-        "required": ["name", "email", "password"],
+        "required": ["email", "password"],
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "User name",
-            "example": "John Doe"
-          },
           "email": {
             "type": "string",
-            "description": "User email",
+            "description": "User's email",
             "format": "email"
           },
           "password": {
             "type": "string",
-            "description": "User Password",
-            "example": "password"
+            "description": "User's password",
+            "example": "qwerty123"
+          },
+          "name":{
+            "type": "string",
+            "description": "User's name",
+            "example": "Den"
           }
         }
       },
-
-      "RegistrationResponse201": {
+      "RegistrationResponse": {
         "type": "object",
-        "required": ["status", "code", "data"],
         "properties": {
-          "status": {
+          "email": {
             "type": "string",
-            "description": "Operation status",
-            "example": "User registered"
+            "description": "User's email",
+            "format": "email"
           },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 201
+          "currentBalance": {
+            "type":"string",
+            "description": "User's current balance",
+            "example": "0"
           },
-          "data": {
-            "type": "object",
-            "description": "Response data",
-            "properties": {
-              "user": {
-                "type": "object",
-                "description": "User data",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "John Doe"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email"
-                  },
-                  "balance": {
-                    "type": "number",
-                    "description": "User balance",
-                    "example": 123.45
-                  }
-                }
-              }
-            }
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "32143232436545474"
           }
         }
       },
-
-      "RegistrationLoginError400": {
-        "type": "object",
-        "required": ["status", "code", "message"],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Bad parameters"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 400
-          },
-          "message": {
-            "type": "string",
-            "description": "Response description",
-            "example": "\"email\" is required"
-          }
-        }
-      },
-
-      "RegistrationError409": {
-        "type": "object",
-        "required": ["status", "code", "message"],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Error"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 409
-          },
-          "message": {
-            "type": "string",
-            "description": "Response description",
-            "example": "Email in use"
-          }
-        }
-      },
-
       "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
         "properties": {
           "email": {
             "type": "string",
-            "description": "User email",
+            "description": "User's email",
             "format": "email"
           },
           "password": {
             "type": "string",
-            "description": "User password",
-            "example": "password"
+            "description": "User's password",
+            "example": "qwerty123"
           }
         }
       },
-
-      "LoginResponse200": {
+      "LoginResponse": {
         "type": "object",
-        "required": ["status", "code", "data"],
         "properties": {
-          "status": {
+          "token": {
             "type": "string",
-            "description": "Operation status",
-            "example": "User logged in"
+            "description": "Token for auth",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXB"
           },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 200
-          },
-          "data": {
+          "user": {
             "type": "object",
-            "description": "Response data",
             "properties": {
-              "token": {
-                "type": "string",
-                "description": "Authorization token",
-                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTM5ZTYzOGE5N2UyZGE5ZGJlZDkyYyIsImlhdCI6MTYzNzA2NzcwNn0.zSESkfGn2d-lz4WFNnUmWh3rZSoA0zEPR9CYb2Cw7N8"
+              "email":{
+                "type":"string",
+                "description": "User's email",
+                "format":"email"
               },
-              "user": {
-                "type": "object",
-                "description": "User data",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "John Doe"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email"
-                  },
-                  "balance": {
-                    "type": "number",
-                    "description": "User balance",
-                    "example": 123.45
-                  }
-                }
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "den@mail.com"
               }
             }
           }
         }
       },
-
-      "GetBalanceResponse200": {
+      "CurrentUserResponse": {
         "type": "object",
-        "required": ["status", "code", "data"],
         "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Balance retrieved"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 200
-          },
-          "data": {
+          "user": {
             "type": "object",
-            "description": "Response data",
             "properties": {
-              "user": {
-                "type": "object",
-                "description": "User data",
-                "properties": {
-                  "balance": {
-                    "type": "number",
-                    "description": "User balance",
-                    "example": 123.45
-                  }
-                }
+              "email": {
+                "type":"string",
+                "description": "User's email",
+                "format":"email"
+              },
+              "name": {
+                "type":"string",
+                "description": "User's name",
+                "example":"Den"
               }
             }
           }
         }
       },
-
-      "UpdateBalanceRequest": {
-        "type": "object",
-        "required": ["balance"],
-        "properties": {
-          "balance": {
-            "type": "number",
-            "description": "User balance",
-            "example": 456.78
+      "CurrentBalanceResponse": {
+        "type":"object",
+        "properties":{
+          "user": {
+            "type":"object",
+            "properties": {
+              "currentBalance": {
+                "type": "string"
+              }
+            }
           }
         }
       },
-
-      "UpdateBalanceResponse200": {
-        "type": "object",
-        "required": ["status", "code", "data"],
+      "AddTransactionsRequest": {
+        "type":"object",
+        "required":["type", "category", "amount", "date"],
         "properties": {
-          "status": {
+          "type":{
             "type": "string",
-            "description": "Operation status",
-            "example": "Balance updated"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "description": "Response data",
-            "properties": {
-              "user": {
-                "type": "object",
-                "description": "User data",
-                "properties": {
-                  "balance": {
-                    "type": "number",
-                    "description": "User balance",
-                    "example": 678.90
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "GetTransactionsRequest": {
-        "type": "object",
-        "required": ["month", "year"],
-        "properties": {
-          "month": {
-            "type": "number",
-            "description": "Day",
-            "example": 11
-          },
-          "year": {
-            "type": "number",
-            "description": "Month",
-            "example": 2021
-          }
-        }
-      },
-
-      "GetTransactionsResponse200": {
-        "type": "object",
-        "required": ["status", "code", "data"],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Transactions retrieved"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "description": "Response data",
-            "properties": {
-              "transactionsData": {
-                "type": "array",
-                "description": "Array of transaction objects",
-                "items": {
-                  "type": "object",
-                  "description": "Transaction data",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Id",
-                      "example": "619406c42ffc6e2d1d6afe4e"
-                    },
-                    "day": {
-                      "type": "number",
-                      "description": "Day",
-                      "example": 18
-                    },
-                    "month": {
-                      "type": "number",
-                      "description": "Month",
-                      "example": 11
-                    },
-                    "year": {
-                      "type": "number",
-                      "description": "Month",
-                      "example": 2021
-                    },
-                    "type": {
-                      "type": "boolean",
-                      "description": "Type",
-                      "example": true
-                    },
-                    "category": {
-                      "type": "string",
-                      "description": "Category",
-                      "example": "Машина"
-                    },
-                    "comment": {
-                      "type": "string",
-                      "description": "Comment",
-                      "example": "Бензин"
-                    },
-                    "sum": {
-                      "type": "number",
-                      "description": "Sum",
-                      "example": 1234
-                    },
-                    "balance": {
-                      "type": "number",
-                      "description": "Balance",
-                      "example": 56789
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-
-      "AddTransactionRequest": {
-        "type": "object",
-        "required": ["day", "month", "year", "type", "category", "sum"],
-        "properties": {
-          "day": {
-            "type": "number",
-            "description": "Day",
-            "example": 18
-          },
-          "month": {
-            "type": "number",
-            "description": "Month",
-            "example": 11
-          },
-          "year": {
-            "type": "number",
-            "description": "Year",
-            "example": 2021
-          },
-          "type": {
-            "type": "boolean",
-            "description": "Type",
-            "example": false
+            "description": "Type of transaction",
+            "example": "expense or income"
           },
           "category": {
             "type": "string",
-            "description": "Category",
-            "example": "Машина"
+            "description": "Category of type of transaction",
+            "example": "food"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of transaction",
+            "example": 125
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of transaction"
           },
           "comment": {
-            "type": "string",
-            "description": "Comment",
-            "example": "Бензин"
-          },
-          "sum": {
-            "type": "number",
-            "description": "Sum",
-            "example": 1234
+            "type":"string"
           }
         }
       },
-
-      "AddTransactionResponse200": {
-        "type": "object",
-        "required": ["status", "code", "data"],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Transactions retrieved"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "description": "Response data",
-            "properties": {
-              "transactionData": {
-                "type": "object",
-                "description": "Transaction data",
-                "properties": {
-                  "day": {
-                    "type": "number",
-                    "description": "Day",
-                    "example": 18
-                  },
-                  "month": {
-                    "type": "number",
-                    "description": "Month",
-                    "example": 11
-                  },
-                  "year": {
-                    "type": "number",
-                    "description": "Month",
-                    "example": 2021
-                  },
-                  "type": {
-                    "type": "boolean",
-                    "description": "Type",
-                    "example": true
-                  },
-                  "category": {
-                    "type": "string",
-                    "description": "Category",
-                    "example": "Машина"
-                  },
-                  "comment": {
-                    "type": "string",
-                    "description": "Comment",
-                    "example": "Бензин"
-                  },
-                  "sum": {
-                    "type": "number",
-                    "description": "Sum",
-                    "example": 1234
-                  },
-                  "balance": {
-                    "type": "number",
-                    "description": "Balance",
-                    "example": 56789
-                  }
-                }
+      "AddTransactionsResponse": {
+        "type":"object",
+        "properties":{
+          "result": {
+            "type":"object",
+            "properties":{
+              "type":{
+                "type": "string",
+                "description": "Type of transaction",
+                "example": "expense or income"
+              },
+              "category": {
+                "type": "string",
+                "description": "Category of type of transaction",
+                "example": "food"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of transaction",
+                "example": 125
+              },
+              "date": {
+                "type": "string",
+                "description": "Date of transaction"
+              },
+              "balanceState": {
+                "type":"number",
+                "description": "User's current balance"
+              },
+              "owner": {
+                "type":"string",
+                "example": "618d40954deb34bfe2054eb8"
+              },
+              "_id": {
+                "type":"string",
+                "example":"368d40954deb34bfe2054eb7"
               }
             }
           }
         }
       },
-
-      "Error401": {
+      "AllTransactionsResponse": {
         "type": "object",
-        "required": ["status", "code", "message"],
         "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Error"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 401
-          },
-          "message": {
-            "type": "string",
-            "description": "Response description",
-            "example": "Invalid token"
-          }
-        }
-      },
-
-      "InternalServerError500": {
-        "type": "object",
-        "required": ["status", "code", "message"],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Operation status",
-            "example": "Error"
-          },
-          "code": {
-            "type": "number",
-            "description": "Status code",
-            "example": 500
-          },
-          "message": {
-            "type": "string",
-            "description": "Response description",
-            "example": "Server error"
-          }
-        }
-      },
-      "Category": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "example": "Eat"
+          "transactions": {
+            "type": "array",
+            "description": "All user's transactions",
+            "items":{
+              "type":"object",
+              "properties":{
+                "_id": {
+                  "type": "string",
+                  "description": "Task's id",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "type": {
+                  "type":"string",
+                  "example": "income"
+                },
+                "category": {
+                  "type": "string",
+                  "example":"food"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 1515
+                },
+                "date": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "balanceState": {
+                  "type":"number",
+                  "example":5151
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type":"string",
+                      "example":"618d40954deb34bfe2054eb8"
                     },
-                    "id": {
-                        "type":"String",
-                        "example": "54362576gjhVNHVG87867"
+                    "email":{
+                      "type":"string",
+                      "format":"email",
+                      "example":"den@mail.com"
                     }
+                  }
                 }
+              }
+            }
+          },
+          "quantity": {
+            "type":"number"
+          }
+        }
       },
-      "Statistics": {
-                "type": "object",
-                "properties": {
-                    "data":{
-                        "type":"object",
-                        "properties": {
-                            "categoriesSummary":{
-                                "type":"object",
-                                "example":"Other"
-                            },
-                            "totalIncome":{
-                                "type":"Number",
-                                "example": 2000
-                            },
-                            "totalSpend": {
-                                "type": "Number",
-                                "example": 1000
-                            },
-                            "uniqueMonth": {
-                                "type":"number",
-                                "example":11
-                            },
-                            "uniqueYear": {
-                                "type": "number",
-                                "example": 2021
-                            }
-                        }
+      "PeriodStatisticsRequest": {
+        "type":"object",
+        "required":["startDate", "endDate"],
+        "properties":{
+          "startDate": {
+            "type":"string"
+          },
+          "endDate": {
+            "type":"string"
+          }
+        }
+      },
+      "PeroidStatisticsResponse": {
+        "type":"object",
+        "properties":{
+          "result": {
+            "type":"array",
+            "items":{
+              "type":"object",
+              "properties":{
+                "_id": {
+                  "type": "string",
+                  "description": "Task's id",
+                  "example": "507f1f77bcf86cd799439011"
+                },
+                "type": {
+                  "type":"string",
+                  "example": "income"
+                },
+                "category": {
+                  "type": "string",
+                  "example":"food"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 1515
+                },
+                "date": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "balanceState": {
+                  "type":"number",
+                  "example":5151
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type":"string",
+                      "example":"618d40954deb34bfe2054eb8"
+                    },
+                    "email":{
+                      "type":"string",
+                      "format":"email",
+                      "example":"den@mail.com"
                     }
+                  }
                 }
+              }
+            }
+          },
+          "quantity": {
+            "type":"number"
+          }
+        }
+      },
+      "ExpenseCategoriesResponse": {
+        "type":"object",
+        "properties":{
+          "categories":{
+            "type":"array",
+            "items":{
+              "type":"object",
+              "properties":{
+                "_id": {
+                  "type":"string",
+                  "example":"507f1f77bcf86cd799439011"
+                },
+                "categoryName":{
+                  "type":"string",
+                  "example": "car"
+                },
+                "type":{
+                  "type":"string"
+                }
+              }
+            }
+          }
+        }
       }
     },
-
     "securitySchemes": {
       "Bearer": {
         "type": "http",

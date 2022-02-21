@@ -1,38 +1,30 @@
-const { Unauthorized, InternalServerError } = require("http-errors");
-const jwt = require("jsonwebtoken");
-const { User } = require("../../models");
+const { Unauthorized } = require('http-errors');
+const jwt = require('jsonwebtoken');
+const { User } = require('../../models/user');
 
 const { SECRET_KEY } = process.env;
 
-const login = async (req, res, next) => {
+const login = async(req, res) => {
   const { email, password } = req.body;
-  let userData = await User.findOne({ email });
-
-  if (!(userData && userData.comparePassword(password)))
-    throw new Unauthorized("Email or password is wrong");
-
-  const payload = { id: userData._id };
+  const user = await User.findOne({ email });
+  if (!user || !user.comparePassword(password)) {
+    throw new Unauthorized('Email or password is wrong');
+  }
+  const payload = {
+    id: user._id
+  };
   const token = jwt.sign(payload, SECRET_KEY);
 
-  userData = await User.findByIdAndUpdate(
-    userData._id,
-    { token },
-    { new: true }
-  );
+  await User.findByIdAndUpdate(user._id, { token });
 
-  if (!userData) throw new InternalServerError("Server error");
-
-  res.status(200).json({
-    status: "User logged in",
+  res.json({
+    status: 'success',
     code: 200,
-    data: {
-      token,
-      user: {
-        name: userData.name,
-        email: userData.email,
-        balance: userData.balance,
-      },
-    },
+    token: token,
+    user: {
+      email: user.email,
+      name: user.name
+    }
   });
 };
 

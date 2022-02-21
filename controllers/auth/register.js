@@ -1,26 +1,25 @@
-const { Conflict, InternalServerError } = require("http-errors");
-const { User } = require("../../models");
+const { Conflict } = require('http-errors');
+const { User } = require('../../models/user');
 
-const register = async (req, res, next) => {
-  const { name, email, password } = req.body;
+const register = async(req, res) => {
+  const { email, password, name } = req.body;
   const user = await User.findOne({ email });
+  if (user) {
+    throw new Conflict('Email in use');
+  }
 
-  if (user) throw new Conflict("Email in use");
-
-  const newUser = new User({ name, email });
+  const newUser = new User({
+    email,
+    name
+  });
   newUser.setPassword(password);
-  const userData = await newUser.save();
-  if (!userData) throw new InternalServerError("Server error");
+  await newUser.save();
 
   res.status(201).json({
-    status: "User registered",
+    status: 'success',
     code: 201,
-    data: {
-      user: {
-        email: userData.email,
-        password: password,
-      },
-    },
+    message: 'Registration successful',
+    user: newUser
   });
 };
 

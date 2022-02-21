@@ -3,9 +3,9 @@ const validation = (schema) => {
     const { error } = schema.validate(req.body);
     if (error) {
       res.status(400).json({
-        status: "Bad parameters",
+        status: 'error',
         code: 400,
-        message: error.message,
+        message: error.message
       });
       return;
     }

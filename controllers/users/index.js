@@ -1,7 +1,9 @@
-const updateBalance = require("./updateBalance");
-const getBalance = require("./getBalance");
+const getCurrentUser = require('./getCurrentUser');
+const updateBalance = require('./updateBalance');
+const getCurrentBalance = require('./getCurrentBalance');
 
 module.exports = {
+  getCurrentUser,
+  getCurrentBalance,
   updateBalance,
-  getBalance,
 };
